@@ -1,0 +1,83 @@
+.tiktok-heading {
+  height: 30vh;
+  padding: 30px;
+  align-content: center;
+}
+.tiktok-heading > h1 {
+  padding-top: 5px;
+  font-family: "Texturina";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 62px;
+  text-align: center;
+  color: #d7cdde;
+}
+.tiktok-box {
+  display: flex;
+  justify-content: center;
+}
+.tbH {
+  display: flex;
+  background-color: black;
+  margin-right: 23px;
+  width: 72px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+}
+.tbD {
+  display: flex;
+  background-color: #06495e;
+  margin-left: 23px;
+  width: 72px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+}
+
+.row-dt {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .column-dt {
+    /* position: relative; */
+    width: 20rem;
+    padding: 22px;
+    /* margin: 2.875rem; */
+    border-radius: 15px;
+    color: white;
+  }
+
+  .parent{
+    position: relative;
+  }
+
+  .blur{
+    border-radius: 15px;
+    position: absolute;
+    width: 70rem;
+    height: 23rem;
+    /* z-index: 1; */
+  }
+  .image{
+    position: relative;
+    width: 15rem;
+    height: 20rem;
+    top: 22px;
+    /* z-index: 3; */
+  }
+
+  .top{
+    display: flex;
+    flex-direction: row;
+  }
+  .z-index{
+    z-index: 3;
+    margin-top: 18rem;
+    margin-left: 1rem;
+  }
+
+  

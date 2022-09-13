@@ -1,0 +1,448 @@
+.Desktop1 {
+  font-family: "Open Sans", sans-serif;
+  background: linear-gradient(
+    223.51deg,
+    #380659 0%,
+    #150240 49.54%,
+    #06495e 100%
+  );
+  min-width: 100vw;
+  min-height: 100vh;
+}
+/* Home */
+.desktop2 {
+  background-color: #13021e;
+  color: white;
+}
+/* Desktop1/About */
+.about {
+  margin: auto;
+  justify-content: center;
+  width: 40%;
+}
+.about {
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  /* or 150% */
+
+  text-align: center;
+
+  /* Primary 2 */
+
+  color: #bdacc8;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+.launch_app {
+  margin: auto;
+  justify-content: center;
+  padding: 8px;
+  gap: 8px;
+  color: black;
+  background: linear-gradient(265.53deg, #4cc9f0 -1.81%, #ffffff 100%);
+  border-radius: 5px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Description */
+.row-d {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.column-d {
+  width: 20rem;
+  padding: 22px;
+  margin: 2.875rem;
+  background: #13021e;
+  box-shadow: -4px -4px 8px 4px rgba(0, 0, 0, 0.25),
+    8px 8px 14px 4px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  color: white;
+}
+.column-d > p {
+  font-size: 17px;
+  color: #8f8994;
+}
+
+.heading-d {
+  color: #d7cdde;
+  font-size: 20px;
+}
+
+/* desktop1/Ecosystem */
+.ecosystem {
+  margin-left: 30px;
+  justify-content: left;
+  width: 50%;
+  margin-top: 60px;
+}
+.ecosystem > h1 {
+  color: #d7cdde;
+  font-family: "Texturina";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+}
+.bullet-mark {
+  color: #b3abb9;
+  font-size: 20px;
+  padding-left: 10px;
+}
+.bullet-mark > li {
+  list-style-type: circle;
+}
+
+/* Desktop1/Features.css */
+.container-f {
+  margin-top: 50px;
+}
+.features {
+  background: #13021e;
+  color: white;
+  width: 50%;
+  display: flex;
+  margin: auto;
+}
+
+.column > h1 {
+  font-family: "Texturina";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 62px;
+
+  /* Primary 1 */
+
+  color: #d7cdde;
+}
+.column {
+  flex: 50%;
+}
+.features-p {
+  color: #8f8994;
+  font-size: 15px;
+}
+.column > h3 {
+  font-family: "Texturina";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  /* line-height: 37px; */
+
+  color: #ffffff;
+}
+
+/* Desktop1/Navbar */
+.navbar {
+  display: flex;
+  /* margin: 3rem; */
+  padding: 3rem;
+}
+.icons {
+  display: flex;
+  padding: 5px;
+}
+.navbar-social {
+  display: flex;
+  background: linear-gradient(265.53deg, #4cc9f0 -1.81%, #ffffff 100%);
+
+  color: black;
+  justify-items: end;
+  text-align: end;
+  /* margin: 3rem; */
+  padding: 10px;
+  position: relative;
+  left: 70%;
+  border: 2px solid white;
+  border-radius: 15px;
+}
+.navbar-social > p {
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 30px;
+  /* identical to box height, or 150% */
+  /* padding: 10px; */
+  margin-right: 10px;
+  text-align: center;
+
+  /* Grey 1 */
+
+  /* color: #b3abb9; */
+}
+
+.icon-1 {
+  margin-right: 5px;
+  padding-top: 5px;
+}
+.icon-2 {
+  margin-left: 5px;
+  padding-top: 5px;
+}
+
+/* Desktop2/ComingSoon */
+.row-dc {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+  text-align: center;
+  height: 40vh;
+}
+
+.column-dc {
+  width: 20rem;
+  padding: 22px;
+  margin: 2.875rem;
+  background-color: #150240;
+  color: white;
+}
+
+.coming {
+  margin-top: 20px;
+  text-align: center;
+  font-family: "Texturina";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 62px;
+  text-align: center;
+
+  /* Primary 1 */
+
+  color: #d7cdde;
+}
+
+/* Desktop2/ConnectWallet */
+.launch_app {
+  margin: auto;
+  justify-content: center;
+  padding: 8px;
+  gap: 8px;
+  color: black;
+  background: linear-gradient(265.53deg, #4cc9f0 -1.81%, #ffffff 100%);
+  border-radius: 5px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.row-d {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.column-d2 {
+  width: 30rem;
+  height: 20rem;
+  padding: 22px;
+  margin: 2.875rem;
+  background: white;
+  box-shadow: -4px -4px 8px 4px rgba(0, 0, 0, 0.25),
+    8px 8px 14px 4px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  color: black;
+}
+.column-d > p {
+  font-size: 17px;
+  color: #8f8994;
+}
+
+.heading-d {
+  color: #d7cdde;
+  font-size: 20px;
+}
+.box {
+  border: 2px solid #8f8994;
+  border-radius: 12px;
+  height: 15rem;
+  padding: 2rem;
+  margin-top: 15px;
+}
+.box-profile {
+  display: flex;
+}
+.box-profile > p {
+  margin-left: 1rem;
+}
+.box-message {
+  padding-top: 1rem;
+}
+.line {
+  color: #8f8994;
+  line-height: 5rem;
+}
+.connectWallet {
+  display: flex;
+  /* margin-top: 10rem; */
+}
+.connectWallet > ul {
+  margin-left: 10px;
+  display: flex;
+  background-color: white;
+  color: black;
+  margin-left: 8rem;
+}
+.connectWallet > ul > li {
+  padding: 15px;
+}
+/* Desktop2/Tiktok */
+.tiktok-heading {
+  height: 30vh;
+  padding: 30px;
+  align-content: center;
+}
+.tiktok-heading > h1 {
+  padding-top: 5px;
+  font-family: "Texturina";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 62px;
+  text-align: center;
+  color: #d7cdde;
+}
+.tiktok-box {
+  display: flex;
+  justify-content: center;
+}
+.tbH {
+  display: flex;
+  background-color: black;
+  margin-right: 23px;
+  width: 72px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+}
+.tbD {
+  display: flex;
+  background-color: #06495e;
+  margin-left: 23px;
+  width: 72px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+}
+
+.row-dt {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.column-dt {
+  /* position: relative; */
+  width: 20rem;
+  padding: 22px;
+  /* margin: 2.875rem; */
+  border-radius: 15px;
+  color: white;
+}
+
+.parent {
+  position: relative;
+}
+
+.blur {
+  border-radius: 15px;
+  position: absolute;
+  width: 70rem;
+  height: 23rem;
+  /* z-index: 1; */
+}
+.image {
+  position: relative;
+  width: 15rem;
+  height: 20rem;
+  top: 22px;
+  /* z-index: 3; */
+}
+
+.top {
+  display: flex;
+  flex-direction: row;
+}
+.z-index {
+  z-index: 3;
+  margin-top: 18rem;
+  margin-left: 1rem;
+}
+
+/* Desktop2/Tweets */
+.tweet {
+  background: linear-gradient(
+    223.51deg,
+    #380659 0%,
+    #150240 49.54%,
+    #06495e 100%
+  );
+  text-align: center;
+}
+.input-text {
+  border: 2px solid #06495e;
+  color: black;
+}
+.tweet-c {
+  height: 30vh;
+  justify-content: center;
+}
+
+.tweet-c > h1 {
+  font-family: "Texturina";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 62px;
+  text-align: center;
+  color: #d7cdde;
+  padding: 50px 0px;
+}
+
+.tweet-spacing > input {
+  margin-right: 23px;
+  width: 13rem;
+  height: 2rem;
+}
+.tweet-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-d2 {
+  display: flex;
+  justify-content: center;
+  margin: 0px;
+}
+
+/* Desktop2/UploadTweet */

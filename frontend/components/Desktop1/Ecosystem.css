@@ -1,0 +1,22 @@
+.ecosystem {
+    margin-left: 30px;
+    justify-content: left;
+    width: 50%;
+    margin-top: 60px;
+  }
+  .ecosystem > h1 {
+    color: #d7cdde;
+    font-family: "Texturina";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+  }
+  .bullet-mark {
+    color: #b3abb9;
+    font-size: 20px;
+    padding-left: 10px;
+  }
+  .bullet-mark > li {
+    list-style-type: circle;
+  }
+  

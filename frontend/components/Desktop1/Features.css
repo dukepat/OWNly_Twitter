@@ -1,0 +1,38 @@
+.container-f {
+    margin-top: 50px;
+  }
+  .features {
+    background: #13021e;
+    color: white;
+    width: 50%;
+    display: flex;
+    margin: auto;
+  }
+  
+  .column > h1 {
+    font-family: "Texturina";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 62px;
+  
+    /* Primary 1 */
+  
+    color: #d7cdde;
+  }
+  .column {
+    flex: 50%;
+  }
+  .features-p {
+    color: #8f8994;
+    font-size: 15px;
+  }
+  .column > h3 {
+    font-family: "Texturina";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    /* line-height: 37px; */
+  
+    color: #ffffff;
+  }

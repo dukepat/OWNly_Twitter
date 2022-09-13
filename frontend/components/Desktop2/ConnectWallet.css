@@ -1,0 +1,78 @@
+.launch_app {
+    margin: auto;
+    justify-content: center;
+    padding: 8px;
+    gap: 8px;
+    color: black;
+    background: linear-gradient(265.53deg, #4cc9f0 -1.81%, #ffffff 100%);
+    border-radius: 5px;
+  
+    /* Inside auto layout */
+  
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+  }
+
+  
+.row-d {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.column-d2 {
+  width: 30rem;
+  height: 20rem;
+  padding: 22px;
+  margin: 2.875rem;
+  background: white;
+  box-shadow: -4px -4px 8px 4px rgba(0, 0, 0, 0.25),
+    8px 8px 14px 4px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  color: black;
+}
+.column-d > p {
+  font-size: 17px;
+  color: #8f8994;
+}
+
+.heading-d {
+  color: #d7cdde;
+  font-size: 20px;
+}
+.box{
+  border: 2px solid #8F8994;
+  border-radius: 12px;
+  height: 15rem;
+  padding: 2rem;
+  margin-top: 15px;
+}
+.box-profile{
+  display: flex;
+}
+.box-profile>p{
+  margin-left: 1rem;
+}
+.box-message{
+  padding-top: 1rem;
+}
+.line{
+  color: #8F8994;
+  line-height: 5rem;
+}
+.connectWallet{
+  display: flex;
+  /* margin-top: 10rem; */
+}
+.connectWallet>ul{
+  
+  margin-left: 10px;
+  display: flex;
+  background-color: white;
+  color: black;
+  margin-left: 8rem;
+}
+.connectWallet>ul>li{
+  padding: 15px;
+}

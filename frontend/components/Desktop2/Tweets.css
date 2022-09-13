@@ -1,0 +1,44 @@
+.tweet {
+  background: linear-gradient(
+    223.51deg,
+    #380659 0%,
+    #150240 49.54%,
+    #06495e 100%
+  );
+  text-align: center;
+}
+.input-text {
+  border: 2px solid #06495e;
+  color: black;
+}
+.tweet-c {
+  height: 30vh;
+  justify-content: center;
+}
+
+.tweet-c > h1 {
+  font-family: "Texturina";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 62px;
+  text-align: center;
+  color: #d7cdde;
+  padding: 50px 0px;
+}
+
+.tweet-spacing > input {
+  margin-right: 23px;
+  width: 13rem;
+  height: 2rem;
+}
+.tweet-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-d2 {
+  display: flex;
+  justify-content: center;
+  margin: 0px;
+}

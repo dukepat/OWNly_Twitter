@@ -1,0 +1,53 @@
+.about {
+    margin: auto;
+    justify-content: center;
+    width: 40%;
+  }
+  .about {
+    font-family: "Mulish";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+    /* or 150% */
+  
+    text-align: center;
+  
+    /* Primary 2 */
+  
+    color: #bdacc8;
+  
+    /* Inside auto layout */
+  
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+  }
+  .launch_app {
+    margin: auto;
+    justify-content: center;
+    padding: 8px;
+    gap: 8px;
+    color: black;
+    background: linear-gradient(265.53deg, #4cc9f0 -1.81%, #ffffff 100%);
+    border-radius: 5px;
+  
+    /* Inside auto layout */
+  
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+  }
+  
+  .column {
+    float: left;
+    width: 50%;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
