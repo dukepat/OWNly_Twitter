@@ -1,0 +1,25 @@
+.row-d {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+  }
+  
+  .column-d {
+    width: 20rem;
+    padding: 22px;
+    margin: 2.875rem;
+    background: #13021e;
+    box-shadow: -4px -4px 8px 4px rgba(0, 0, 0, 0.25),
+      8px 8px 14px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    color: white;
+  }
+  .column-d > p {
+    font-size: 17px;
+    color: #8f8994;
+  }
+  
+  .heading-d {
+    color: #d7cdde;
+    font-size: 20px;
+  }

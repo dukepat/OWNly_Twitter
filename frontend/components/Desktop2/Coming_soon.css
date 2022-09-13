@@ -1,0 +1,30 @@
+.row-dc {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+  text-align: center;
+  height: 40vh;
+}
+
+.column-dc {
+  width: 20rem;
+  padding: 22px;
+  margin: 2.875rem;
+  background-color: #150240;
+  color: white;
+}
+
+.coming {
+  margin-top: 20px;
+  text-align: center;
+  font-family: "Texturina";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 62px;
+  text-align: center;
+
+  /* Primary 1 */
+
+  color: #d7cdde;
+}

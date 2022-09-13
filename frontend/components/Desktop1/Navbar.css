@@ -1,0 +1,47 @@
+.navbar {
+  display: flex;
+  /* margin: 3rem; */
+  padding: 3rem;
+}
+.icons{
+    display: flex;
+    padding: 5px;
+}
+.navbar-social {
+  display: flex;
+  background: linear-gradient(265.53deg, #4CC9F0 -1.81%, #FFFFFF 100%);
+
+  color: black;
+  justify-items: end;
+  text-align: end;
+  /* margin: 3rem; */
+  padding: 10px;
+  position: relative;
+  left: 70%;
+  border: 2px solid white;
+  border-radius: 15px;
+}
+.navbar-social > p {
+  font-family: "Mulish";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 30px;
+  /* identical to box height, or 150% */
+  /* padding: 10px; */
+  margin-right: 10px;
+  text-align: center;
+
+  /* Grey 1 */
+
+  /* color: #b3abb9; */
+}
+
+.icon-1{
+    margin-right: 5px;
+    padding-top: 5px;
+}
+.icon-2{
+    margin-left: 5px;
+    padding-top: 5px;
+}
