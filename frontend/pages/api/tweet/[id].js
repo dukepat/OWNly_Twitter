@@ -5,7 +5,6 @@ const headers = {
 };
 
 export default async function handler(req, res) {
-  console.log(process.env.NEXT_APP_BEARER_TOKEN);
   const id = req.query.id;
   try {
     const response = await axios.get(
