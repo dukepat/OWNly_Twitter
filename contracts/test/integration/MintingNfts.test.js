@@ -1,13 +1,20 @@
 const { assert, expect } = require("chai")
 const { network, deployments, ethers } = require('hardhat')
 const { developmentChains } = require("../../helper-hardhat-config")
-const { storeImage, storeTokenUriMetadata } = require("../../utils/uploadToPinata")
-const pinataSDK = require("@pinata/sdk")
+//const { storeImage, storeTokenUriMetadata } = require("../../utils/uploadToPinata")
+const { storeNFT } = require("../../utils/uploadToNftStorage")
 const path = require("path")
 const fs = require("fs")
 
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+async function getRandomInt(max, followerTwitterNft) {
+    let tweetAlreadyDeployed
+    let tweetId
+    do {
+        tweetId = Math.floor(Math.random() * max)
+        tweetAlreadyDeployed = await followerTwitterNft.getIfTweetIsDeployed(tweetId)
+        console.log("Tweet %s -> deployed ?: %s", tweetId, tweetAlreadyDeployed)
+    } while (tweetAlreadyDeployed)
+    return tweetId;
 }
 
 developmentChains.includes(network.name)
@@ -27,28 +34,6 @@ developmentChains.includes(network.name)
             // Deploy all contracts tagged with phrase 'all'
             //await deployments.fixture(['all'])
             deployerTwitterNft = await ethers.getContract("TwitterNft", deployer)
-            // try {
-            //     let contractAddress
-            //     const fullPath = path.resolve("./deployedContracts/contracts.json") // absolute path 
-            //     fs.readFile(fullPath, 'utf8', function readFileCallback(err, data) {
-            //         if (err) {
-            //             console.log(err);
-            //         } else {
-            //             obj = JSON.parse(data);
-            //             contractAddress = obj[network.name]
-            //         }
-            //     })
-
-            // } catch {
-            //     deployerTwitterNft = await twitterNftFactory.deploy()
-            //     let jsonObj = {}
-            //     jsonObj[`${network.name}`] = `${deployerTwitterNft.address}`
-            //     fs.writeFile('./deployedContracts/contracts.json', JSON.stringify(jsonObj), function (err) {
-            //         if (err) throw err;
-            //         console.log('complete');
-            //     });
-            // }
-            // deployerTwitterNft = await twitterNftFactory.deploy() //temporary deployment happens every time
             contentCreatorTwitterNft = deployerTwitterNft.connect(contentCreator)
             followerTwitterNft = deployerTwitterNft.connect(follower)
             initialBalance = ethers.utils.parseEther('0.002')
@@ -66,6 +51,7 @@ developmentChains.includes(network.name)
                 console.log(txObj)
             }
             console.log("Balance of contentCreator %s", balanceOfContentCreator)
+
             if (balanceOfFollower < initialBalance) {
                 txObj = await follower.sendTransaction(tx)
                 txObj.wait()
@@ -81,132 +67,78 @@ developmentChains.includes(network.name)
             it("mint NFT with proper token URI", async () => {
                 //Arrange
                 const deployFee = await ethers.utils.parseEther('0.001')
-                const tokenFeature = 2
+                const transferable = true
                 const transferLimit = 2
-                const tweetId = getRandomInt(3000)
+                const maxMintableAmount = 10
+                const tweetId = await getRandomInt(3000, followerTwitterNft)
+
                 const mintFee = await ethers.utils.parseEther('0.001')
                 const imagesFilePath = "./images"
                 const fullImagesPath = path.resolve(imagesFilePath) // absolute path 
                 const files = fs.readdirSync(fullImagesPath)
-                let metadata = {
-                    title: "",
-                    type: "",
-                    properties: {
-                        tweetId: "",
-                        contentCreator: "",
-                        image: "",
-                        timestamp: "",
-                        attributes: [
-                            {
-                                numberOfLikes: 0,
-                                numberOfShares: 0,
-                            }
-                        ]
-                    }
-                }
-                let response = await storeImage(fullImagesPath + "/" + files[0])
-                console.log("Response: %s", response)
+                const url = "https://github.com/OWNly-Finance"
+                let tokenId
+                const nftDescription = `Tweet deployed by ${contentCreator.address} and minted by ${follower.address}`
+                /* Piniata */
+                // let response = await storeImage(fullImagesPath + "/" + files[0])
+                // console.log("Response: %s", response)
+                // metadata.name = `Ownly tweet ${tweetId}`
+                // metadata.description = nftDescription
 
-                metadata.title = files[0].replace(".png", "")
-                metadata.tweetId = tweetId
-                metadata.contentCreator = `twitter user name`
-                metadata.image = `ipfs://${response.IpfsHash}`
-                metadata.timestamp = response.Timestamp
-                const metadataUploadResponse = await storeTokenUriMetadata(metadata)
-                console.log("Upload response: %s", metadataUploadResponse)
-                const pinataTokenUri = `ipfs://${metadataUploadResponse.IpfsHash}`
+                // metadata.name = files[0].replace(".png", "")
+                // metadata.attributes[0].tweetId = tweetId
+                // metadata.attributes[0].contentCreator = `twitter user name`
+                // metadata.attributes[0].timestamp = response.Timestamp
+                // metadata.image = `ipfs://${response.IpfsHash}`
+                // const result = await storeTokenUriMetadata(metadata)
+                // console.log("Upload response: %s", result)
+                // const tokenUri = `ipfs://${result.IpfsHash}`
+
+                /* NFT Storage */
+                const result = await storeNFT(
+                    fullImagesPath + "/" + files[0],
+                    tweetId,
+                    nftDescription,
+                    url,
+                    contentCreator.address,
+                    follower.address,
+                    34,
+                    12)
+                console.log("Upload response: %s", result)
+                console.log(result.url)
+                const tokenUri = result.url
 
                 //Act
-                // await new Promise(async (resolve, reject) => {
-                //     followerTwitterNft.once("ParamsDeployed", async () => {
-                //         try {
-                //             console.log("ParamsDeployed")
-                //             tweetDeployed = await followerTwitterNft.getIfTweetIsDeployed(tweetId)
-                //             console.log("Tweet deployed ? %s", tweetDeployed)
-                //             resolve() // if try passes, resolves the promise 
-                //         } catch (e) {
-                //             reject(e) // if try fails, rejects the promise
-                //         }
-                //     })
-                //     followerTwitterNft.once("Transfer", async () => {
-                //         try {
-                //             console.log("Transfer")
-                //             let balance = followerTwitterNft.balanceOf(follower.address)
-                //             console.log("Follower balance: %s", balance)
-                //             resolve() // if try passes, resolves the promise 
-                //         } catch (e) {
-                //             reject(e) // if try fails, rejects the promise
-                //         }
-                //     })
-                //     followerTwitterNft.once("TokenUriSet", async () => {
-                //         try {
-                //             console.log("TokenUriSet")
-                //             let nftTokenUri = await followerTwitterNft.tokenURI(0)
-                //             console.log("Token URI: %s", nftTokenUri)
-                //             resolve() // if try passes, resolves the promise 
-                //         } catch (e) {
-                //             reject(e) // if try fails, rejects the promise
-                //         }
-                //     })
-
-
-                //     console.log("Setting deploymentFee to %s", +deployFee)
-                //     let tx = await deployerTwitterNft.setDeployFee(+deployFee)
-                //     await tx.wait(1)
-                //     console.log("Deploying tweet %s", tweetId)
-                //     tx = await contentCreatorTwitterNft.deployNftParams(tokenFeature,
-                //         transferLimit,
-                //         tweetId,
-                //         +mintFee)
-                //     await tx.wait(1)
-
-                //     console.log(metadata)
-                //     //console.log("Tweet deployed ? %s", tweetDeployed)
-                //     console.log(JSON.stringify(metadata))
-                //     tweetDeployed = await followerTwitterNft.getIfTweetIsDeployed(tweetId)
-                //     console.log("Tweet deployed ? %s", tweetDeployed)
-                //     console.log("Minting token from tweet: %s", tweetId)
-                //     tx = await followerTwitterNft.mintToken(
-                //         tweetId
-                //     )
-                //     await tx.wait(1)
-                //     let balance = followerTwitterNft.balanceOf(follower.address)
-                //     console.log("Follower balance: %s", balance)
-                //     tx = await followerTwitterNft.setTokenURI(0, JSON.stringify(pinataTokenUri))
-                //     await tx.wait(1)
-                //     let nftTokenUri = await followerTwitterNft.tokenURI(0)
-                //     console.log("Token URI: %s", nftTokenUri)
-
-                //     assert.equal(JSON.stringify(pinataTokenUri), nftTokenUri.toString())
-                // })
                 console.log("Setting deploymentFee to %s", +deployFee)
                 let tx = await deployerTwitterNft.setDeployFee(+deployFee)
                 await tx.wait(1)
                 console.log("Deploying tweet %s", tweetId)
-                tx = await contentCreatorTwitterNft.deployNftParams(tokenFeature,
+                tx = await contentCreatorTwitterNft.deployNftParams(transferable,
                     transferLimit,
                     tweetId,
-                    +mintFee)
+                    +mintFee,
+                    maxMintableAmount)
                 await tx.wait(1)
 
-                console.log(metadata)
-                //console.log("Tweet deployed ? %s", tweetDeployed)
-                console.log(JSON.stringify(metadata))
                 tweetDeployed = await followerTwitterNft.getIfTweetIsDeployed(tweetId)
                 console.log("Tweet deployed ? %s", tweetDeployed)
                 console.log("Minting token from tweet: %s", tweetId)
+                tokenId = await followerTwitterNft.getTokenCounter()
                 tx = await followerTwitterNft.mintToken(
                     tweetId
                 )
                 await tx.wait(1)
+
+                console.log(tokenId)
+                console.log(tokenId.toNumber())
                 let balance = await followerTwitterNft.balanceOf(follower.address)
                 console.log("Follower balance: %s", balance)
-                tx = await followerTwitterNft.setTokenURI(0, JSON.stringify(pinataTokenUri))
+                console.log("Setting URI with token Id: %s and URI: %s", tokenId.toNumber(), tokenUri) //JSON.stringify(
+                tx = await followerTwitterNft.setTokenURI(tokenId.toNumber(), tokenUri) // JSON.stringify(
                 await tx.wait(1)
-                let nftTokenUri = await followerTwitterNft.tokenURI(0)
+                let nftTokenUri = await followerTwitterNft.tokenURI(tokenId.toNumber())
                 console.log("Token URI: %s", nftTokenUri)
-
-                assert.equal(JSON.stringify(pinataTokenUri), nftTokenUri.toString())
+                assert.equal(tokenUri, nftTokenUri.toString())
 
             })
         })

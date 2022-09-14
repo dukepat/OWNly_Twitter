@@ -8,41 +8,48 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "./Vault.sol";
 
 // Errors (gas optimalization) Q5: Do we need it ?
-// error TwitterNft__NeedMoreETHSent();
+error TwitterNft__NeedMoreETH();
 error TwitterNft__TransferNotPossible();
 error TwitterNft__SafeTransferFromNotPossible();
+error TwitterNft__NotProperValueOfShare();
+error TwitterNft__TweetAlreadyDeployed();
+error TwitterNft__TweetAlreadyExists();
+error TwitterNft__MaxNumberOfTokensExceeded();
+error TwitterNft__MaxMintableParamToHigh();
+error TwitterNft__TweetNotDeployed();
+error TwitterNft__UriAlreadySet();
+error TwitterNft__NoRightsToSetUri();
+error TwitterNft__TransferFailed();
 
 // Types
-enum Feature {
-    NON_TRANSFERABLE,
-    TRANSFERABLE,
-    TRANSFERABLE_N_TIMES
-}
 
 // Structs
 struct tweetFeatures {
-    Feature feature;
+    bool transferable;
     address contentCreator;
     uint256 transferLimit;
     uint256[] tokenIDs;
     bool isDeployed;
     bool isUriSet;
     uint256 mintFee;
+    uint256 maxMintableAmount;
 }
 
-// Q1: Contract per social or all socials in one contract ?
 contract TwitterNft is ERC721URIStorage, Vault {
     // Variables
     uint256 private deployFee = 0;
     uint256 private creatorShare = 80;
     uint256 internal s_tokenCounter;
+    uint256 private globalMaxMintableAmount;
+
     mapping(uint256 => tweetFeatures) internal s_tweetIdToFeatures;
     mapping(uint256 => uint256) internal s_tokenIdToTransferCounter;
     mapping(uint256 => uint256) internal s_tokenIdToTweetId;
+    mapping(address => uint256[]) private s_contentCreatorToTweetIds;
 
-    // Events
+    // Events - to fix!
     event ParamsDeployed(
-        uint256 indexed _tokenFeature,
+        bool indexed _transferable,
         uint256 _transferLimit,
         uint256 indexed _tweetId,
         uint256 indexed _mintFee
@@ -59,13 +66,8 @@ contract TwitterNft is ERC721URIStorage, Vault {
     //     _;
     // }
 
-    // Q7: Do we need additional mapping mintersToContentCreator in the contract ? Yes
-    // It would allow us to easier share of revenue with owners
-
     // Events
-
-    // Q2: What should be naming convention for tokens ?
-    constructor() ERC721("OWNly Tweet NFT", "OTT") Vault() {} 
+    constructor() ERC721("OWNly Tweet NFT", "OTT") Vault() {}
 
     // Setters
     function setDeployFee(uint256 _deployFee) public onlyOwner {
@@ -74,49 +76,73 @@ contract TwitterNft is ERC721URIStorage, Vault {
     }
 
     function setCreatorShare(uint256 _creatorShare) public onlyOwner {
-        require(
-            _creatorShare > 0 && _creatorShare <= 100,
-            "Not proper value of share"
-        );
+        if (_creatorShare < 0 || _creatorShare > 100) {
+            revert TwitterNft__NotProperValueOfShare();
+        }
         creatorShare = _creatorShare;
+    }
+
+    function setGlobalMaximumAmount(uint256 _globalMaximumAmount)
+        public
+        onlyOwner
+    {
+        globalMaxMintableAmount = _globalMaximumAmount;
     }
 
     // Can be called only by the content creator - name to be changed
     function deployNftParams(
-        uint256 _tokenFeature,
+        bool _transferable,
         uint256 _transferLimit,
         uint256 _tweetId,
-        uint256 _mintFee
-    ) public payable returns (bool) {
-        require(_tokenFeature < 3, "Wrong value, the range is 0,1,2");
-        require(
-            s_ownerToFunds[msg.sender] >= deployFee,
-            "Need more ETH in vault"
-        );
-        require(
-            !s_tweetIdToFeatures[_tweetId].isDeployed,
-            "This tweet is already deployed"
-        );
-        s_tweetIdToFeatures[_tweetId].feature = Feature(_tokenFeature);
+        uint256 _mintFee,
+        uint256 _maxMintableAmount
+    ) external payable returns (bool) {
+        s_ownerToFunds[msg.sender] += msg.value;
+        s_fundsDeposited += msg.value;
+        if (s_ownerToFunds[msg.sender] < deployFee) {
+            revert TwitterNft__NeedMoreETH();
+        }
+        if (s_tweetIdToFeatures[_tweetId].isDeployed) {
+            revert TwitterNft__TweetAlreadyDeployed();
+        }
+        if (_maxMintableAmount > globalMaxMintableAmount) {
+            revert TwitterNft__MaxMintableParamToHigh();
+        }
+        if (s_tweetIdToFeatures[_tweetId].contentCreator != address(0)) {
+            revert TwitterNft__TweetAlreadyExists();
+        }
+
+        s_contentCreatorToTweetIds[msg.sender].push(_tweetId);
+        s_tweetIdToFeatures[_tweetId].transferable = _transferable;
         s_tweetIdToFeatures[_tweetId].transferLimit = _transferLimit;
-        s_tweetIdToFeatures[_tweetId].contentCreator = msg.sender; //Q9: How we get guarancy that it is a true owner ? Verification process done on server is enough ?
+        //Q: How we get guarancy that it is a true owner ? Verification process done on server is enough ?
+        s_tweetIdToFeatures[_tweetId].contentCreator = msg.sender;
         s_tweetIdToFeatures[_tweetId].isDeployed = true;
         s_tweetIdToFeatures[_tweetId].mintFee = _mintFee;
+        s_tweetIdToFeatures[_tweetId].maxMintableAmount = _maxMintableAmount;
         s_ownerToFunds[msg.sender] -= deployFee;
-        emit ParamsDeployed(_tokenFeature, _transferLimit, _tweetId, _mintFee);
+        emit ParamsDeployed(_transferable, _transferLimit, _tweetId, _mintFee);
         return s_tweetIdToFeatures[_tweetId].isDeployed;
     }
 
-    function mintToken(uint256 _tweetId) public payable returns (uint256) {
+    function mintToken(uint256 _tweetId) external payable returns (uint256) {
+        s_ownerToFunds[msg.sender] += msg.value;
+        s_fundsDeposited += msg.value;
         uint256 newTokenId = s_tokenCounter;
-        require(
-            s_tweetIdToFeatures[_tweetId].isDeployed,
-            "This Tweet is not deployed by content creator!"
-        );
-        require(
-            s_ownerToFunds[msg.sender] >= s_tweetIdToFeatures[_tweetId].mintFee,
-            "Need more ETH in vault"
-        );
+        if (
+            s_tweetIdToFeatures[_tweetId].maxMintableAmount <=
+            s_tweetIdToFeatures[_tweetId].tokenIDs.length
+        ) {
+            revert TwitterNft__MaxNumberOfTokensExceeded();
+        }
+        if (!s_tweetIdToFeatures[_tweetId].isDeployed) {
+            revert TwitterNft__TweetNotDeployed();
+        }
+        if (
+            s_ownerToFunds[msg.sender] < s_tweetIdToFeatures[_tweetId].mintFee
+        ) {
+            revert TwitterNft__NeedMoreETH();
+        }
         s_tokenCounter += 1;
         _safeMint(msg.sender, newTokenId); // TBD move at the end
         //_setTokenURI(newTokenId, _tokenUri);
@@ -124,7 +150,6 @@ contract TwitterNft is ERC721URIStorage, Vault {
         s_tokenIdToTransferCounter[newTokenId] = 0;
         s_tokenIdToTweetId[newTokenId] = _tweetId;
         uint256 feeToCreator = (msg.value * creatorShare) / 100;
-        // Here can be created some kind of tracking to accumulate creators fees in the contract and allow to withdraw when te amount will be higher than X
         s_ownerToFunds[
             s_tweetIdToFeatures[_tweetId].contentCreator
         ] += feeToCreator;
@@ -134,10 +159,13 @@ contract TwitterNft is ERC721URIStorage, Vault {
     }
 
     function setTokenURI(uint256 _tokenId, string memory _tokenUri) external {
-        require(
-            s_tweetIdToFeatures[s_tokenIdToTweetId[_tokenId]].isUriSet == false,
-            "URI already set"
-        );
+        if (s_tweetIdToFeatures[s_tokenIdToTweetId[_tokenId]].isUriSet) {
+            revert TwitterNft__UriAlreadySet();
+        }
+
+        if (ownerOf(_tokenId) != msg.sender) {
+            revert TwitterNft__NoRightsToSetUri();
+        }
         s_tweetIdToFeatures[s_tokenIdToTweetId[_tokenId]].isUriSet = true;
         super._setTokenURI(_tokenId, _tokenUri);
         emit TokenUriSet();
@@ -146,7 +174,9 @@ contract TwitterNft is ERC721URIStorage, Vault {
     function withdraw() public onlyOwner {
         uint256 contractBalance = address(this).balance - s_fundsDeposited; // Funds deposited by the users must remain !!
         (bool success, ) = payable(msg.sender).call{value: contractBalance}("");
-        require(success, "Transfer Failed");
+        if (!success) {
+            revert TwitterNft__TransferFailed();
+        }
     }
 
     function transferFrom(
@@ -155,36 +185,22 @@ contract TwitterNft is ERC721URIStorage, Vault {
         uint256 tokenId
     ) public virtual override {
         uint256 tweetId = s_tokenIdToTweetId[tokenId];
-        Feature tokenFeature = s_tweetIdToFeatures[tweetId].feature;
+        bool transferable = s_tweetIdToFeatures[tweetId].transferable;
         //uint256 tokenTimeLimit = s_tweetIdToFeatures[tweetId].timeLimit;
         uint256 tokenTransferLimit = s_tweetIdToFeatures[tweetId].transferLimit;
-        if (tokenFeature == Feature.NON_TRANSFERABLE) {
-            // if (
-            //     tokenFeature == Feature.NON_TRANSFERABLE_TIME_LIMITED &&
-            //     tokenTimeLimit <= block.timestamp
-            // ) {
-            //     super._burn(tokenId); // time limitation will not be possible because NFT owner must to approve the burning
-            // }
-            // token not transferable - prevent transfer
+        if (transferable == false) {
             revert TwitterNft__TransferNotPossible();
-            // } else if (
-            //     (tokenFeature.feature ==
-            //         Feature.TRANSFERABLE_N_TIMES_TIME_LIMITED ||
-            //         tokenFeature.feature == Feature.TRANSFERABLE_N_TIMES) &&
-            //     tokenFeature.timeLimit <= block.timestamp
-            // ) {
-            //     super._burn(tokenId); // time limitation will not be possible because NFT owner must to approve the burning
-            //     revert TwitterNft__TransferNotPossible();
-        } else if (tokenFeature == Feature.TRANSFERABLE_N_TIMES) {
-            if (s_tokenIdToTransferCounter[tokenId] >= tokenTransferLimit) {
-                revert TwitterNft__TransferNotPossible();
-            } else {
+        } else {
+            if (
+                s_tokenIdToTransferCounter[tokenId] < tokenTransferLimit ||
+                tokenTransferLimit == 0
+            ) {
+                // zero reflects infinite number of transfers
                 super.transferFrom(from, to, tokenId);
                 s_tokenIdToTransferCounter[tokenId]++;
+            } else {
+                revert TwitterNft__TransferNotPossible();
             }
-        } else {
-            super.transferFrom(from, to, tokenId);
-            s_tokenIdToTransferCounter[tokenId]++;
         }
     }
 
@@ -215,9 +231,16 @@ contract TwitterNft is ERC721URIStorage, Vault {
         return deployFee;
     }
 
-    function getFeatureOfToken(uint256 _tokenId) public view returns (uint256) {
-        return
-            uint256(s_tweetIdToFeatures[s_tokenIdToTweetId[_tokenId]].feature);
+    function getGlobalMaxMintableAmount() public view returns (uint256) {
+        return globalMaxMintableAmount;
+    }
+
+    function getTransferabilityOfToken(uint256 _tokenId)
+        public
+        view
+        returns (bool)
+    {
+        return s_tweetIdToFeatures[s_tokenIdToTweetId[_tokenId]].transferable;
     }
 
     function getTransferLimitOfToken(uint256 _tokenId)
@@ -257,18 +280,26 @@ contract TwitterNft is ERC721URIStorage, Vault {
         view
         returns (uint256[] memory)
     {
-        return s_tweetIdToFeatures[_tweetId].tokenIDs;  
-        
+        return s_tweetIdToFeatures[_tweetId].tokenIDs;
     }
 
     function getIfTweetIsDeployed(uint256 _tweetId) public view returns (bool) {
         return s_tweetIdToFeatures[_tweetId].isDeployed;
     }
-    // function getTweetIdsByContentOwner(address contentOwner)
-    //     public
-    //     view
-    //     returns (uint256[] memory)
-    // {
 
-    // }
+    function getAllTweetIdsByContentCreator(address _contentCreator)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return s_contentCreatorToTweetIds[_contentCreator];
+    }
+
+    function getFollowerByTweetIdAndTokenId(uint256 _tweetId, uint256 _tokenId)
+        public
+        view
+        returns (address)
+    {
+        return ownerOf(s_tweetIdToFeatures[_tweetId].tokenIDs[_tokenId]);
+    }
 }

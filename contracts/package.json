@@ -25,9 +25,11 @@
     "coverage": "hardhat coverage"
   },
   "dependencies": {
+    "@pinata/sdk": "^1.1.26",
     "@uniswap/v2-core": "^1.0.1",
+    "mime": "^3.0.0",
     "mocha": "^10.0.0",
-    "uniswap-v2-deploy-plugin": "^0.0.4",
-    "@pinata/sdk": "^1.1.26"
+    "nft.storage": "^7.0.0",
+    "uniswap-v2-deploy-plugin": "^0.0.4"
   }
 }
