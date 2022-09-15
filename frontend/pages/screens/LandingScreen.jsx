@@ -8,6 +8,7 @@ import {
 } from "../../components/Desktop1";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
+import Footer from "../../components/Footer";
 
 function LandingScreen(props) {
   const router = useRouter();
@@ -22,6 +23,7 @@ function LandingScreen(props) {
       <Description />
       <Features />
       <Ecosystem />
+      <Footer />
     </div>
   );
 }

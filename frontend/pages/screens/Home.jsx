@@ -6,9 +6,11 @@ import {
   Tweets,
   Tiktok,
   ComingSoon,
-  UploadTweet,
+  ExploreTweets,
 } from "../../components/Desktop2";
 import { contractABI, contractAddress } from "../../abi/TwitterNft";
+import Footer from "../../components/Footer";
+import DeployTweet from "./DeployTweet";
 
 const Home = () => {
   const web3 = new Web3(Web3.givenProvider);
@@ -24,10 +26,12 @@ const Home = () => {
     <div className="desktop2">
       <div>
         <ConnectWallet />
-        <UploadTweet />
+        <DeployTweet />
+        <ExploreTweets />
         <Tweets />
         <Tiktok />
         <ComingSoon />
+        <Footer />
       </div>
     </div>
   );
