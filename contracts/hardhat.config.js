@@ -28,6 +28,7 @@ const PRIVATE_KEY =
 const PRIVATE_KEY1 = process.env.PRIVATE_KEY1 || "0x21111118a03081fe260ecdc106554d09d9d1209bcafd46942555555555666666"
 const PRIVATE_KEY2 = process.env.PRIVATE_KEY2 || "0x31111118a03081fe260ecdc106554d09d9d1209bcafd46942555555555666666"
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || ""
+const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || ""
 
 module.exports = {
     defaultNetwork: "hardhat",
@@ -57,6 +58,13 @@ module.exports = {
             chainId: 5,
             blockConfirmations: 6,
         },
+        polygonMumbai: {
+            url: "https://rpc-mumbai.maticvigil.com",
+            accounts: [PRIVATE_KEY, PRIVATE_KEY1, PRIVATE_KEY2],
+            chainId: 80001,
+            blockConfirmations: 6,
+        },
+
     },
     solidity: {
         // multiple versions of compilers
@@ -70,7 +78,10 @@ module.exports = {
         ],
     },
     etherscan: {
-        apiKey: ETHERSCAN_API_KEY,
+        apiKey: {
+            rinkeby: ETHERSCAN_API_KEY,
+            polygonMumbai: POLYGONSCAN_API_KEY
+        }
     },
     gasReporter: {
         enabled: true,

@@ -15,8 +15,10 @@ contract Vault is Ownable {
     address private s_wethAddress = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
     bool private s_processing = false;
 
+    event depositDone(uint256 amount, address indexed depositedTo);
+
     modifier nonReentrant() {
-        require(s_processing = false, "Already processing");
+        require(s_processing == false, "Already processing");
         s_processing = true;
         _;
         s_processing = false;
@@ -38,14 +40,18 @@ contract Vault is Ownable {
         }
         s_ownerToFunds[msg.sender] += msg.value;
         s_fundsDeposited += msg.value;
+        emit depositDone(msg.value, msg.sender);
+    }
+
+    function fundVaultWithEth() public payable {
+        s_ownerToFunds[msg.sender] += msg.value;
+        s_fundsDeposited += msg.value;
+        emit depositDone(msg.value, msg.sender);
     }
 
     function fundVaultWithErc20(uint256 _amount, address _token)
         public
-        returns (
-            //nonReentrant
-            uint256
-        )
+        returns (uint256)
     {
         IERC20 token = IERC20(_token);
         uint256 ethBought = 0;
@@ -74,8 +80,8 @@ contract Vault is Ownable {
         address _addressFromToken,
         address _addressToToken,
         uint256 _amount,
-        address _to /*nonReentrant*/
-    ) private returns (uint256) {
+        address _to
+    ) private nonReentrant returns (uint256) {
         IERC20(_addressFromToken).approve(s_routerAddress, _amount);
         address[] memory path;
         path = new address[](2);
@@ -106,8 +112,7 @@ contract Vault is Ownable {
         return tokenBought[1];
     }
 
-    function withdrawFundsFromVault(uint256 _amount) public /*nonReentrant*/
-    {
+    function withdrawFundsFromVault(uint256 _amount) public nonReentrant {
         require(
             s_ownerToFunds[msg.sender] >= _amount,
             "There is not enough funds"
