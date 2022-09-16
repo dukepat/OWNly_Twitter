@@ -5,10 +5,6 @@ import { MoralisProvider } from "react-moralis";
 import { ChakraProvider } from "@chakra-ui/react";
 
 function MyApp({ Component, pageProps }) {
-  console.log(
-    process.env.NEXT_PUBLIC_APP_ID,
-    process.env.NEXT_PUBLIC_SERVER_URL
-  );
   return (
     <MoralisProvider
       appId={process.env.NEXT_PUBLIC_APP_ID}
