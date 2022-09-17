@@ -35,6 +35,10 @@ struct tweetFeatures {
     uint256 maxMintableAmount;
 }
 
+/**@title Novel contract which allow to issue novels in safe and decentralised way
+ * @author Kamil Palenik (xRave110)
+ * @dev Based on ERC1155, implements its own URI mapping, Pausable
+ */
 contract TwitterNft is ERC721URIStorage, Vault {
     // Variables
     uint256 private deployFee = 0;

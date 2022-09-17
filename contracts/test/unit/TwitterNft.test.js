@@ -9,28 +9,28 @@ const fs = require("fs")
 !developmentChains.includes(network.name)
     ? describe.skip
     : describe("TwitterNft", function () {
-        let deployerTwitterNft
+        let contractOwnerTwitterNft
         let contentCreatorTwitterNft
         let followerTwitterNft
-        let deployer
+        let contractOwner
         let contentCreator
         let follower
         beforeEach(async () => {
             const accounts = await ethers.getSigners()
-            deployer = accounts[0]
+            contractOwner = accounts[0]
             contentCreator = accounts[1]
             follower = accounts[2]
             // Deploy all contracts tagged with phrase 'all'
             //await deployments.fixture(['all'])
             twitterNftFactory = await ethers.getContractFactory("TwitterNft")
-            deployerTwitterNft = await twitterNftFactory.deploy()
-            contentCreatorTwitterNft = deployerTwitterNft.connect(contentCreator)
-            followerTwitterNft = deployerTwitterNft.connect(follower)
+            contractOwnerTwitterNft = await twitterNftFactory.deploy()
+            contentCreatorTwitterNft = contractOwnerTwitterNft.connect(contentCreator)
+            followerTwitterNft = contractOwnerTwitterNft.connect(follower)
             initialBalance = ethers.utils.parseEther('0.01')
-            await deployerTwitterNft.setGlobalMaximumAmount(150)
+            await contractOwnerTwitterNft.setGlobalMaximumAmount(150)
             console.log(10)
             let tx = {
-                to: deployerTwitterNft.address,
+                to: contractOwnerTwitterNft.address,
                 // Convert currency unit from ether to wei
                 value: initialBalance
             }
@@ -47,8 +47,8 @@ const fs = require("fs")
                     name: "OWNly Tweet NFT",
                     symbol: "OTT"
                 }
-                const tokenName = await deployerTwitterNft.name()
-                const tokenSymbol = await deployerTwitterNft.symbol()
+                const tokenName = await contractOwnerTwitterNft.name()
+                const tokenSymbol = await contractOwnerTwitterNft.symbol()
                 assert.equal(tokenName.toString(), expected.name)
                 assert.equal(tokenSymbol.toString(), expected.symbol)
             })
@@ -65,7 +65,7 @@ const fs = require("fs")
                 const maxMintableAmount = 10
 
                 //Act
-                await deployerTwitterNft.setDeployFee(+deployFee)
+                await contractOwnerTwitterNft.setDeployFee(+deployFee)
                 await contentCreatorTwitterNft.deployNftParams(transferable,
                     transferLimit,
                     tweetId,
@@ -94,8 +94,8 @@ const fs = require("fs")
                 const deployFee = await ethers.utils.parseEther('0.001')
                 const transferable = false
 
-                await deployerTwitterNft.setDeployFee(+deployFee)
-                await expect(deployerTwitterNft.deployNftParams( // has no ETH in VAULT
+                await contractOwnerTwitterNft.setDeployFee(+deployFee)
+                await expect(contractOwnerTwitterNft.deployNftParams( // has no ETH in VAULT
                     transferable,
                     0,
                     2,
@@ -107,7 +107,7 @@ const fs = require("fs")
             it("prevents from deployment of the Nft already deployed", async () => {
                 const transferable = false
                 const deployFee = await ethers.utils.parseEther('0.001')
-                await deployerTwitterNft.setDeployFee(+deployFee)
+                await contractOwnerTwitterNft.setDeployFee(+deployFee)
                 contentCreatorTwitterNft.deployNftParams(
                     transferable,
                     0,
@@ -127,8 +127,8 @@ const fs = require("fs")
             it("prevents maxMintable to be more than maxGlobalMintable amount", async function () {
                 const maxGlobalMintable = 4;
                 const deployFee = await ethers.utils.parseEther("0.001")
-                await deployerTwitterNft.setDeployFee(deployFee)
-                await deployerTwitterNft.setGlobalMaximumAmount(maxGlobalMintable)
+                await contractOwnerTwitterNft.setDeployFee(deployFee)
+                await contractOwnerTwitterNft.setGlobalMaximumAmount(maxGlobalMintable)
                 const tokenFeature = 2;
                 await expect(contentCreatorTwitterNft.deployNftParams(
                     tokenFeature,
@@ -150,7 +150,7 @@ const fs = require("fs")
                 const maxMintableAmount = 10
 
                 //Act
-                await deployerTwitterNft.setDeployFee(+deployFee)
+                await contractOwnerTwitterNft.setDeployFee(+deployFee)
                 await contentCreatorTwitterNft.deployNftParams(transferable,
                     transferLimit,
                     tweetId,
@@ -185,7 +185,7 @@ const fs = require("fs")
                 const maxMintableAmount = 10
 
                 //Act
-                await deployerTwitterNft.setDeployFee(+deployFee)
+                await contractOwnerTwitterNft.setDeployFee(+deployFee)
                 await contentCreatorTwitterNft.deployNftParams(transferable,
                     transferLimit,
                     tweetId,
@@ -215,7 +215,7 @@ const fs = require("fs")
                 const maxMintableAmount = 10
 
                 //Act
-                await deployerTwitterNft.setDeployFee(+deployFee)
+                await contractOwnerTwitterNft.setDeployFee(+deployFee)
                 await contentCreatorTwitterNft.deployNftParams(transferable,
                     transferLimit,
                     tweetId,
@@ -249,7 +249,7 @@ const fs = require("fs")
                 const maxMintableAmount = 2
 
                 //Act
-                await deployerTwitterNft.setDeployFee(+deployFee)
+                await contractOwnerTwitterNft.setDeployFee(+deployFee)
                 await contentCreatorTwitterNft.deployNftParams(transferable,
                     transferLimit,
                     tweetId,
@@ -276,7 +276,7 @@ const fs = require("fs")
                 maxMintableAmount = 2
             })
             it("allows only Owner to Withdraw", async function () {
-                await deployerTwitterNft.setDeployFee(deployFee)
+                await contractOwnerTwitterNft.setDeployFee(deployFee)
                 await contentCreatorTwitterNft.deployNftParams(
                     transferable, transferLimit, tweetId, mintFee, maxMintableAmount
                 )
@@ -288,6 +288,8 @@ const fs = require("fs")
         describe("ERC721 URI", function () {
             it("mint NFT with proper token URI", async () => {
                 //Arrange
+                const NR_OF_LIKES = 32
+                const NR_OF_SHARES = 12
                 const deployFee = await ethers.utils.parseEther('0.001')
                 const transferable = true
                 const transferLimit = 2
@@ -299,33 +301,6 @@ const fs = require("fs")
                 const maxMintableAmount = 10
                 const nftDescription = `Tweet deployed by ${contentCreator.address} and minted by ${follower.address}`
                 const url = "https://github.com/OWNly-Finance"
-                /* Pinata */
-                // let metadata = {
-                //     title: "",
-                //     type: "",
-                //     properties: {
-                //         tweetId: "",
-                //         contentCreator: "",
-                //         image: "",
-                //         timestamp: "",
-                //         attributes: [
-                //             {
-                //                 numberOfLikes: 0,
-                //                 numberOfShares: 0,
-                //             }
-                //         ]
-                //     }
-                // }
-                // let response = await storeImage(fullImagesPath + "/" + files[0])
-                // console.log("Response: %s", response)
-                // metadata.title = files[0].replace(".png", "")
-                // metadata.tweetId = tweetId
-                // metadata.contentCreator = `twitter user name`
-                // metadata.image = `ipfs://${response.IpfsHash}`
-                // metadata.timestamp = response.timestamp
-                // const metadataUploadResponse = await storeTokenUriMetadata(metadata)
-                // console.log("Upload response: %s", metadataUploadResponse)
-                // const tokenUri = `ipfs://${metadataUploadResponse.IpfsHash}`
 
                 /* NFT Storage */
                 const result = await storeNFT(
@@ -333,16 +308,14 @@ const fs = require("fs")
                     tweetId,
                     nftDescription,
                     url,
-                    contentCreator.address,
-                    follower.address,
-                    34,
-                    12)
+                    NR_OF_LIKES,
+                    NR_OF_SHARES)
                 console.log("Upload response: %s", result)
                 console.log(result.url)
                 const tokenUri = result.url
 
                 //Act
-                await deployerTwitterNft.setDeployFee(+deployFee)
+                await contractOwnerTwitterNft.setDeployFee(+deployFee)
                 await contentCreatorTwitterNft.deployNftParams(transferable,
                     transferLimit,
                     tweetId,
@@ -371,8 +344,8 @@ const fs = require("fs")
                 const maxMintableAmount = 2
 
                 //Act
-                await deployerTwitterNft.setCreatorShare(90)
-                await deployerTwitterNft.setDeployFee(+deployFee)
+                await contractOwnerTwitterNft.setCreatorShare(90)
+                await contractOwnerTwitterNft.setDeployFee(+deployFee)
                 await contentCreatorTwitterNft.deployNftParams(transferable,
                     transferLimit,
                     tweetId,
@@ -385,10 +358,10 @@ const fs = require("fs")
                 )
             })
             it("tests global parameters", async function () {
-                const contentCreatorShare = await deployerTwitterNft.getContentCreatorShareOfMintFee()
-                const tokenCounter = await deployerTwitterNft.getTokenCounter()
-                const deployFee = await deployerTwitterNft.getDeployFee()
-                const maxMintableAmount = await deployerTwitterNft.getGlobalMaxMintableAmount()
+                const contentCreatorShare = await contractOwnerTwitterNft.getContentCreatorShareOfMintFee()
+                const tokenCounter = await contractOwnerTwitterNft.getTokenCounter()
+                const deployFee = await contractOwnerTwitterNft.getDeployFee()
+                const maxMintableAmount = await contractOwnerTwitterNft.getGlobalMaxMintableAmount()
                 // console.log(contentCreatorShare.toString())
                 expect(contentCreatorShare.toString()).to.equal("90")
                 expect(tokenCounter.toString())
@@ -401,16 +374,16 @@ const fs = require("fs")
 
             it("Checks all the tweet parameters", async function () {
                 const tweetId = 2221
-                const transferability = await deployerTwitterNft.getTransferabilityOfToken(0)
-                const transferLimit = await deployerTwitterNft.getTransferLimitOfToken(0)
-                const transferCounter = await deployerTwitterNft.getTransferCounterOfToken(0)
-                const mintFee = await deployerTwitterNft.getMintFeeByTweetId(tweetId)
-                let tokenIdsByTweetId = await deployerTwitterNft.getTokenIdsByTweetId(tweetId)
+                const transferability = await contractOwnerTwitterNft.getTransferabilityOfToken(0)
+                const transferLimit = await contractOwnerTwitterNft.getTransferLimitOfToken(0)
+                const transferCounter = await contractOwnerTwitterNft.getTransferCounterOfToken(0)
+                const mintFee = await contractOwnerTwitterNft.getMintFeeByTweetId(tweetId)
+                let tokenIdsByTweetId = await contractOwnerTwitterNft.getTokenIdsByTweetId(tweetId)
                 tokenIdsByTweetId = tokenIdsByTweetId.map((element) => {
                     return element.toString()
                 })
-                const isDeployed = await deployerTwitterNft.getIfTweetIsDeployed(tweetId)
-                const follower = await deployerTwitterNft.getFollowerByTweetIdAndTokenId(tweetId, 0)
+                const isDeployed = await contractOwnerTwitterNft.getIfTweetIsDeployed(tweetId)
+                const follower = await contractOwnerTwitterNft.getFollowerByTweetIdAndTokenId(tweetId, 0)
 
                 expect(transferability.toString()).to.equal("true")
                 expect(transferLimit.toString()).to.equal("2")

@@ -8,32 +8,44 @@ require("dotenv").config()
 const NFT_STORAGE_KEY = process.env.NFT_STORAGE_KEY
 
 /**
- * Reads an image file from `imagePath` and stores an NFT with the given name and description.
+ * Reads an image file from `imagePath` and stores an NFT with the given params.
  * @param {string} imagePath the path to an image file
- * @param {string} name a name for the NFT
  * @param {string} description a text description for the NFT
+ * @param {string} external_url url for external website
+ * @param {uint}likesValue
+ * @param {uint}sharesValue
  */
-async function storeNFTs(imagesPath) {
+async function storeNFTs(imagesPath, description, external_url, likesValue, sharesValue) {
     const fullImagesPath = path.resolve(imagesPath)
     const files = fs.readdirSync(fullImagesPath)
     let responses = []
     for (fileIndex in files) {
         const image = await fileFromPath(`${fullImagesPath}/${files[fileIndex]}`)
         const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY })
-        const dogName = files[fileIndex].replace(".png", "")
+        const name = files[fileIndex].replace(".png", "")
         const response = await nftstorage.store({
             image,
-            name: dogName,
-            description: `An adorable ${dogName}`,
-            // Currently doesn't support attributes 
-            // attributes: [{ trait_type: "cuteness", value: 100 }],
+            name: name,
+            description: description,
+            external_url: external_url,
+            attributes: [{ trait_type: "likes", value: likesValue },
+            { trait_type: "shares", value: sharesValue }],
         })
         responses.push(response)
     }
     return responses
 }
 
-async function storeNFT(fullImagePath, tweetId, description, external_url, contentCreator, follower, likesValue, sharesValue) {
+/**
+ * Reads an image file from `imagePath` and stores an NFT with the given params.
+ * @param {string} imagePath the path to an image file
+ * @param {uint} tweetId tweet ID
+ * @param {string} description a text description for the NFT
+ * @param {string} external_url url for external website
+ * @param {uint}likesValue
+ * @param {uint}sharesValue
+ */
+async function storeNFT(fullImagePath, tweetId, description, external_url, likesValue, sharesValue) {
     console.log(fullImagePath)
 
     console.log("Uploading to IPFS!")

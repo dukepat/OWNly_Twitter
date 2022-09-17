@@ -7,6 +7,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/IUniswapV2Router02.sol";
 import "./interfaces/IWETH.sol";
 
+/**@title Novel contract which allow to issue novels in safe and decentralised way
+ * @author Kamil Palenik (xRave110)
+ * @dev Based on ERC1155, implements its own URI mapping, Pausable
+ */
 contract Vault is Ownable {
     mapping(address => uint256) internal s_ownerToFunds;
     uint256 internal s_fundsDeposited; // counter which keeps track of amount of funds deposited
