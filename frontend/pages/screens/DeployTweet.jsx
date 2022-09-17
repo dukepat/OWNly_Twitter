@@ -8,9 +8,9 @@ import Header from "../../components/Desktop3/Header";
 import Main from "../../components/Desktop3/Main";
 import Settings from "../../components/Desktop3/Settings";
 
-import { Text, Box, Flex } from "@chakra-ui/react";
+import { Text, Box, Flex, Input } from "@chakra-ui/react";
 
-function App() {
+function DeployTweet() {
   const [bg, setBg] = useState(
     "linear-gradient(106.8deg, rgb(117, 255, 220) 6%, rgb(163, 216, 255) 47.6%, rgb(248, 215, 251) 87.8%)"
   );
@@ -110,11 +110,6 @@ function App() {
 
   return (
     <Box>
-      <Head>
-        <title>Twimage - Create beautiful tweets</title>
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-      </Head>
-
       <Header bringTweet={bringTweet} />
 
       <Flex my="16" direction={flex} p="4">
@@ -132,29 +127,12 @@ function App() {
         />
         {!hint && <Settings props={propsForSettings} />}
       </Flex>
-
-      <footer>
-        <Text px="1rem" className="i" color="gray.500" fontSize="lg">
-          Made with 💜 for open source by{" "}
-          <a
-            href="https://www.twitter.com/ojo_duke"
-            rel="noreferrer"
-            target="_blank"
-          >
-            Prince
-          </a>
-          . Check out on{" "}
-          <a
-            href="http://github.com/dukepat/tweet-to-image"
-            rel="noreferrer"
-            target="_blank"
-          >
-            Github
-          </a>
-          .
-        </Text>
-      </footer>
+      <Flex my="16" direction={flex} p="4">
+        <Input name="tweetURL" placeholder="Select Token Feature" />
+        <Input name="tweetURL" placeholder="Enter Mint Fee" />
+        <Input name="tweetURL" placeholder="Enter Transfer Limit" />
+      </Flex>
     </Box>
   );
 }
-export default App;
+export default DeployTweet;
