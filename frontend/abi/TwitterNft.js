@@ -1,4 +1,7 @@
-export const contractAddress = "0xaB2f1B97BDB2E33a32328011a4197523edbEd9B6";
+export const contractAddressRinkeby =
+  "0xaB2f1B97BDB2E33a32328011a4197523edbEd9B6";
+// polygon
+export const contractAddress = "0x4c629D4F72fC89cC2CA1650994429bCd91c3d99C";
 export const contractABI = [
   {
     inputs: [],

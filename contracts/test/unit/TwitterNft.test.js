@@ -28,7 +28,6 @@ const fs = require("fs")
             followerTwitterNft = contractOwnerTwitterNft.connect(follower)
             initialBalance = ethers.utils.parseEther('0.01')
             await contractOwnerTwitterNft.setGlobalMaximumAmount(150)
-            console.log(10)
             let tx = {
                 to: contractOwnerTwitterNft.address,
                 // Convert currency unit from ether to wei

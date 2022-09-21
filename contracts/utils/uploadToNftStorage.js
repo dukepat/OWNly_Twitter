@@ -45,6 +45,21 @@ async function storeNFTs(imagesPath, description, external_url, likesValue, shar
  * @param {uint}likesValue
  * @param {uint}sharesValue
  */
+
+async function storeBookNFT(fullImagePath, name = undefined, description = undefined, external_url = undefined, listOfAttributes = undefined) {
+    console.log("Uploading to NFT.storage")
+    const image = await fileFromPath(fullImagePath)
+    const nftStorage = new NFTStorage({ token: NFT_STORAGE_KEY })
+    const response = await nftStorage.store({
+        image,
+        name: name,
+        description: description,
+        external_url: external_url,
+        attributes: listOfAttributes
+    })
+    return response
+}
+
 async function storeNFT(fullImagePath, tweetId, description, external_url, likesValue, sharesValue) {
     console.log(fullImagePath)
 
@@ -78,5 +93,5 @@ async function fileFromPath(filePath) {
 }
 
 module.exports = {
-    storeNFTs, storeNFT
+    storeBookNFT, storeNFT
 }

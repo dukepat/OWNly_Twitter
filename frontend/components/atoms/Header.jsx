@@ -6,6 +6,7 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
+import { contractABI } from "../../abi/TwitterNft";
 
 const Header = ({ bringTweet }) => {
   const title_size = { base: "33px", md: "50px", lg: "55px" };
@@ -15,7 +16,7 @@ const Header = ({ bringTweet }) => {
     <>
       <Box pt="20" px="4">
         <Text fontSize={title_size} className="title i">
-          Upload Tweet
+          Deploy/Mint Tweet
         </Text>
       </Box>
       <Box className="i" my="12" align="center">

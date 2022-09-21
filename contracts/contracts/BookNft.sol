@@ -40,7 +40,7 @@ contract BookContract is ERC1155, Ownable {
      * Name : book title
      * Description: summary
      * Image: ipfs link
-     * External_url: marketplace website
+     * External_url: website which will have book content restricted to the NFT owners
      */
 
     /**Centralized server storage (temporary solution - must be visible only for ERC1155 owners)
@@ -100,7 +100,7 @@ contract BookContract is ERC1155, Ownable {
     /**
      *
      */
-    function createBook(uint256 _amount, string memory _uri)
+    function deployBook(uint256 _amount, string memory _uri)
         external
         isNotEmpty(_uri)
     {
@@ -119,19 +119,18 @@ contract BookContract is ERC1155, Ownable {
             })
         );
         _mint(msg.sender, tokenId, _amount, "");
-        _setBookUri(tokenId, _uri);
         emit BookCreated(tokenId, _uri);
     }
 
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 id,
-        uint256 amount,
-        bytes memory data
-    ) public virtual override {}
+    // function safeTransferFrom(
+    //     address from,
+    //     address to,
+    //     uint256 id,
+    //     uint256 amount,
+    //     bytes memory data
+    // ) public virtual override {}
 
-    function modifyContent(uint256 _tokenId, string memory _uri)
+    function modifyBookContent(uint256 _tokenId, string memory _uri)
         external
         onlyCreator(_tokenId)
         bookNotCompleted(_tokenId)
@@ -145,7 +144,11 @@ contract BookContract is ERC1155, Ownable {
         emit ContentAdded(_tokenId);
     }
 
-    function completeBook(uint256 _tokenId) external onlyCreator(_tokenId) {
+    function completeBook(uint256 _tokenId)
+        external
+        onlyCreator(_tokenId)
+        bookNotCompleted(_tokenId)
+    {
         books[_tokenId].isCompleted = true;
         emit BookCompleted(_tokenId);
     }

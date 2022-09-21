@@ -5,14 +5,16 @@ const { verify } = require("../utils/verify")
 module.exports = async function ({ deployments }) {
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
+    const result = await storeBookNFT(fullImagesPath + "/" + files[0])
 
-    log("---------------------------------")
-    const args = []
-    const basicNft = await deploy("TwitterNft", {
+    log("--------------------")
+    console.log(`Main uri: ${result.url}`)
+    const args = [result.url]
+    const basicNft = await deploy("BookNft", {
         from: deployer,
         args: args,
         log: true,
-        waitConfirmations: network.config.blockConfirmations || 1 // wait predefined number of block confirmations or 1 if not defined
+        waitConfirmations: network.config.blockConfirmations || 1
     })
 
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
@@ -24,4 +26,5 @@ module.exports = async function ({ deployments }) {
 
 }
 
-module.exports.tags = ["all", "twitter"]
+module.exports.tags = ["all", "book"]
+

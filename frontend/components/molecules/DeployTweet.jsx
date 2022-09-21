@@ -1,16 +1,17 @@
 import Head from "next/head";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import axios from "axios";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
-import Header from "../../components/Desktop3/Header";
-import Main from "../../components/Desktop3/Main";
-import Settings from "../../components/Desktop3/Settings";
+import Header from "../atoms/Header";
+import Main from "../atoms/Main";
+import Settings from "../atoms/Settings";
 
-import { Text, Box, Flex, Input } from "@chakra-ui/react";
+import { Text, Box, Flex, Input, Select, Button } from "@chakra-ui/react";
+import { BigNumber } from "ethers";
 
-function DeployTweet() {
+function DeployTweet({ contract }) {
   const [bg, setBg] = useState(
     "linear-gradient(106.8deg, rgb(117, 255, 220) 6%, rgb(163, 216, 255) 47.6%, rgb(248, 215, 251) 87.8%)"
   );
@@ -18,7 +19,7 @@ function DeployTweet() {
   const tweetRef = useRef(null);
 
   const [tweetData, setTweetData] = useState(null);
-
+  const [tweetIsDeployed, setTweetIsDeployed] = useState(false);
   const [showTime, setShowTime] = useState(true);
   const [showMetrics, setShowMetrics] = useState(true);
   const [showSource, setShowSource] = useState(true);
@@ -29,6 +30,21 @@ function DeployTweet() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  // form props
+  const [tweetId, setTweetId] = useState(0);
+  const [mintFee, setMintFee] = useState(0);
+  const [transferLimit, setTransferLimit] = useState(0);
+  const [mintLimit, setMintLimit] = useState(0);
+  const [tweetImageURL, setTweetImageURL] = useState("");
+
+  const checkIfDeployed = async (id) => {
+    try {
+      const response = await contract.getIfTweetIsDeployed(id);
+      setTweetIsDeployed(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const bringTweet = async (e) => {
     try {
       e.preventDefault();
@@ -36,6 +52,7 @@ function DeployTweet() {
       setLoading(true);
       const url = e.target.elements.tweetURL.value;
       const id = url.split("/")[5];
+      setTweetId(id);
       const { data, status } = await axios.get(`/api/tweet/${id}`);
       if (data.message) {
         setError(true);
@@ -44,6 +61,7 @@ function DeployTweet() {
       } else {
         setLoading(false);
         setTweetData(data.data);
+        checkIfDeployed(id);
         setError(false);
       }
     } catch (e) {
@@ -91,7 +109,21 @@ function DeployTweet() {
       }
     }
   };
-
+  const deployTweet = async () => {
+    console.log(transferLimit, tweetId, mintFee, mintLimit);
+    try {
+      const response = await contract.deployNftParams(
+        transferLimit > 0 ? true : false,
+        parseInt(transferLimit),
+        BigNumber.from(tweetId),
+        parseInt(mintFee),
+        parseInt(mintLimit)
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const propsForSettings = {
     showTime,
     setShowTime,
@@ -104,6 +136,11 @@ function DeployTweet() {
     convert,
     bg,
     setBg,
+    tweetIsDeployed,
+    deployTweet,
+    setMintLimit,
+    setMintFee,
+    setTransferLimit,
   };
 
   const flex = { base: "column", lg: "row" };
@@ -126,11 +163,6 @@ function DeployTweet() {
           showSource={showSource}
         />
         {!hint && <Settings props={propsForSettings} />}
-      </Flex>
-      <Flex my="16" direction={flex} p="4">
-        <Input name="tweetURL" placeholder="Select Token Feature" />
-        <Input name="tweetURL" placeholder="Enter Mint Fee" />
-        <Input name="tweetURL" placeholder="Enter Transfer Limit" />
       </Flex>
     </Box>
   );

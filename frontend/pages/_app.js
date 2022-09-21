@@ -1,5 +1,4 @@
 import "../styles/globals.css";
-import "../styles/App.css";
 import "../styles/main.css";
 import { MoralisProvider } from "react-moralis";
 import { ChakraProvider } from "@chakra-ui/react";

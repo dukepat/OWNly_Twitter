@@ -1,16 +1,16 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import LandingScreen from "./screens/LandingScreen";
+import Homepage from "./screens/Homepage";
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Create Next App</title>
+        <title>OWNly App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <LandingScreen />
+        <Homepage />
       </main>
     </div>
   );
