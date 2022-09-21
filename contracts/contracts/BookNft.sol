@@ -30,7 +30,7 @@ struct Book {
  * @author Kamil Palenik (xRave110)
  * @dev Based on ERC1155, implements its own URI mapping, Pausable
  */
-contract BookContract is ERC1155, Ownable {
+contract BookNft is ERC1155, Ownable {
     /* Events */
     event BookCreated(uint256 indexed tokenId, string uri);
     event BookCompleted(uint256 indexed tokenId);

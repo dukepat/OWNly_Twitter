@@ -46,7 +46,7 @@ async function storeNFTs(imagesPath, description, external_url, likesValue, shar
  * @param {uint}sharesValue
  */
 
-async function storeBookNFT(fullImagePath, name = undefined, description = undefined, external_url = undefined, listOfAttributes = undefined) {
+async function storeBookNFT(fullImagePath, name = '', description = '', external_url = '', listOfAttributes = undefined) {
     console.log("Uploading to NFT.storage")
     const image = await fileFromPath(fullImagePath)
     const nftStorage = new NFTStorage({ token: NFT_STORAGE_KEY })
