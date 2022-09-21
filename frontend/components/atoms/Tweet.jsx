@@ -94,8 +94,8 @@ const Tweet = ({ tweet, showTime, showMetrics, showSource, showImage }) => {
           {text}
         </Text>
         {image &&
-          image.map((eachImage) => (
-            <Image src={eachImage} mt="2" fit="cover" />
+          image.map((eachImage, i) => (
+            <Image key={i} src={eachImage} mt="2" fit="cover" />
           ))}
         <div className="time_source sec">
           <Text fontSize={font_size_small}>
