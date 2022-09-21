@@ -14,11 +14,11 @@ const App = () => {
     const provider = await web3ModalRef.current.connect();
     const web3Provider = new providers.Web3Provider(provider);
 
-    // If the user is not connected to Rinkeby, tell them to switch to rinkeby
+    // If the user is not connected to Mumbai, tell them to switch to Mumbai
 
     const { chainId } = await web3Provider.getNetwork();
     if (chainId !== 80001) {
-      window.alert("Please switch to the Rinkeby network");
+      window.alert("Please switch to the Mumbai network");
       throw new Error("Incorrect network");
     }
 
