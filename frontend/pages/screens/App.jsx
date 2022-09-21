@@ -14,7 +14,7 @@ const App = () => {
     const provider = await web3ModalRef.current.connect();
     const web3Provider = new providers.Web3Provider(provider);
 
-    // If the user is not connected to Mumbai, tell them to switch to Mumbai
+    // If the user is not connected to Mumbai, tell to switch to Mumbai
 
     const { chainId } = await web3Provider.getNetwork();
     if (chainId !== 80001) {
