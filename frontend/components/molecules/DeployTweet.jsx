@@ -3,6 +3,8 @@ import { useState, useRef, useEffect } from "react";
 
 import axios from "axios";
 import domtoimage from "dom-to-image";
+import { File, NFTStorage } from "nft.storage";
+import mime from "mime";
 import { saveAs } from "file-saver";
 import Header from "../atoms/Header";
 import Main from "../atoms/Main";
@@ -45,6 +47,44 @@ function DeployTweet({ contract }) {
       console.log(error);
     }
   };
+  const convert = async (format) => {
+    const node = tweetRef.current;
+    const scale = 2;
+
+    let dataUrl;
+
+    const style = {
+      transform: "scale(2)",
+      transformOrigin: "top left",
+    };
+
+    const param = {
+      height: node.offsetHeight * scale,
+      width: node.offsetWidth * scale,
+      quality: 1,
+      style,
+    };
+
+    switch (format) {
+      case "png": {
+        dataUrl = await domtoimage.toPng(node, param);
+        setTweetImageURL(dataUrl);
+        return;
+      }
+
+      case "jpeg": {
+        dataUrl = await domtoimage.toJpeg(node, param);
+        setTweetImageURL(dataUrl);
+        return;
+      }
+
+      case "svg": {
+        dataUrl = await domtoimage.toSvg(node, param);
+        setTweetImageURL(dataUrl);
+        return;
+      }
+    }
+  };
   const bringTweet = async (e) => {
     try {
       e.preventDefault();
@@ -70,56 +110,47 @@ function DeployTweet({ contract }) {
       setTweetData(null);
     }
   };
-
-  const convert = async (format) => {
-    const node = tweetRef.current;
-    const scale = 2;
-
-    let dataUrl;
-
-    const style = {
-      transform: "scale(2)",
-      transformOrigin: "top left",
-    };
-
-    const param = {
-      height: node.offsetHeight * scale,
-      width: node.offsetWidth * scale,
-      quality: 1,
-      style,
-    };
-
-    switch (format) {
-      case "png": {
-        dataUrl = await domtoimage.toPng(node, param);
-        saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
-        return;
-      }
-
-      case "jpeg": {
-        dataUrl = await domtoimage.toJpeg(node, param);
-        saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
-        return;
-      }
-
-      case "svg": {
-        dataUrl = await domtoimage.toSvg(node, param);
-        saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
-        return;
-      }
+  const fileFromURL = async (tweetImageURL) => {
+    const type = mime.getType("png");
+    return new File([tweetImageURL], "tweetImage", { type });
+  };
+  const storeTweetImage = async (
+    file,
+    name = "",
+    description = "",
+    external_url = "",
+    listOfAttributes = undefined
+  ) => {
+    try {
+      const image = await fileFromURL(file);
+      const nftStorage = new NFTStorage({
+        token: process.env.NEXT_PUBLIC_NFT_STORAGE_KEY,
+      });
+      const response = await nftStorage.store({
+        image,
+        name,
+        description,
+        external_url,
+        attributes: listOfAttributes,
+      });
+      console.log(response);
+      return response;
+    } catch (error) {
+      throw error;
     }
   };
   const deployTweet = async () => {
     console.log(transferLimit, tweetId, mintFee, mintLimit);
     try {
-      const response = await contract.deployNftParams(
+      const nftResponse = await storeTweetImage(tweetImageURL);
+      const chainResponse = await contract.deployNftParams(
         transferLimit > 0 ? true : false,
         parseInt(transferLimit),
         BigNumber.from(tweetId),
         parseInt(mintFee),
         parseInt(mintLimit)
       );
-      console.log(response);
+      console.log(nftResponse, chainResponse);
     } catch (error) {
       console.log(error);
     }
