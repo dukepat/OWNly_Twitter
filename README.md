@@ -1,4 +1,4 @@
-# OWNly Project - hack the mountain hackathon
+# OWNly Project - Moralis x Filecoin "1, 2, Web3" Hackathon
 The OWNly project is an own and share NFT Copyright Platform. You can literally put a price on almost anything-U in the digital space.
 
 ## Project Repos:
@@ -7,7 +7,7 @@ The OWNly project is an own and share NFT Copyright Platform. You can literally 
 ### [Frontend](https://github.com/OWNly-Hackathon-Prpoject/frontend)
 
 ## Table of content
-- [OWNly Project - hack the mountain](#ownly-project---hack-the-mountain)
+- [OWNly Project](#ownly-project---Moralis x Filecoin "1, 2, Web3" Hackathon)
   - [Table of content](#table-of-content)
   - [Ideation](#ideation)
   - [UI](#ui)
@@ -17,7 +17,7 @@ The OWNly project is an own and share NFT Copyright Platform. You can literally 
     - [Tests](#tests)
     - [Deployed Contract](#deployed-contract)
     - [Deployed NFTs](#deployed-nfts)
-
+- [Use Cases](#use-cases)
 ## Ideation
 
 - What are you doing with your digital and social footprint? How much has blockchain benefitted you as you go along on your normal online social engagements? How about monetizing your digital footprints and other of your intellectual properties in the digital space?
@@ -84,6 +84,17 @@ The contract is fully verified and visible on [Polygonscan](https://mumbai.polyg
 The followers should see minted NFTs on OpenSea thanks to compatible URI and metadata:
 
 <img src=./images/contracts/NFT.png alt="drawing" width="850" height="900"/>
+
+## Use Cases
+- Opportunity to convert usual social communications like tweets to NFTs for income generation.
+- Opportunity to use tweets as a means of fundraiser. Followers are able to mint a fundraiser tweet to raise money for a just cause.
+- Beyond the social NFTs, the other aspects of the project viz: book NFT, blog NFT, top secret NFTs, whistleblower, news NF, music and video NFTs, lectures & tutorial NFTs and other Non-social-Us, assures intellectual property owners and creators to earn from their works.
+With 10% commission going for humanitarian courses, would contribute to solving food crises and for other emergency needs.
+
+## Team Members
+- 
+
+## Market Strategy
 
 
 
