@@ -50,6 +50,7 @@ function DeployTweet({ contract }) {
       e.preventDefault();
       setHint(false);
       setLoading(true);
+      // https://twitter.com/JamaalBowmanNY/status/1572609122566115340?s=20&t=7Om-uPOOMA9R86AR5LLEaQ
       const url = e.target.elements.tweetURL.value;
       const id = url.split("/")[5];
       setTweetId(id);
@@ -92,20 +93,20 @@ function DeployTweet({ contract }) {
     switch (format) {
       case "png": {
         dataUrl = await domtoimage.toPng(node, param);
-        saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
-        return;
+        let savedItem = saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
+        return savedItem;
       }
 
       case "jpeg": {
         dataUrl = await domtoimage.toJpeg(node, param);
-        saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
-        return;
+        let savedItem = saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
+        return savedItem;
       }
 
       case "svg": {
         dataUrl = await domtoimage.toSvg(node, param);
-        saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
-        return;
+        let savedItem = saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
+         return savedItem;
       }
     }
   };

@@ -5,6 +5,7 @@ import {
   Collapse,
   Flex,
   IconButton,
+  Heading,
   Stack,
   Text,
   useBreakpointValue,
@@ -45,16 +46,27 @@ export default function Navigation({ contract }) {
           />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
+        <Heading fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}>
           <Text
-            textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            fontFamily={"heading"}
-            color={useColorModeValue("gray.800", "white")}
+            as={"span"}
+            position={"relative"}
+            _after={{
+              content: "''",
+              width: "full",
+              height: useBreakpointValue({ base: "20%", md: "30%" }),
+              position: "absolute",
+              bottom: 1,
+              left: 0,
+              bg: "blue.400",
+              zIndex: -1,
+            }}
           >
-            Ownly
+            OWNly
           </Text>
+        </Heading>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
-            {/* <DesktopNav /> */}
+             {/* { < DesktopNav /> } */}
           </Flex>
         </Flex>
 
