@@ -47,7 +47,7 @@ The OWNly project is an own and share NFT Copyright Platform. You can literally 
 
 - App page
 
-<img src=./images/ui-ux/AppPage.png alt="drawing" width="600" height="500"/>
+<img src=./images/ui-ux/AppPage.png alt="drawing" width="600" height="300"/>
 
 - App page test
 
