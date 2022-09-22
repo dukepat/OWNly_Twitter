@@ -90,7 +90,7 @@ function DeployTweet({ contract }) {
       e.preventDefault();
       setHint(false);
       setLoading(true);
-      // https://twitter.com/JamaalBowmanNY/status/1572609122566115340?s=20&t=7Om-uPOOMA9R86AR5LLEaQ
+      
       const url = e.target.elements.tweetURL.value;
       const id = url.split("/")[5];
       setTweetId(id);
