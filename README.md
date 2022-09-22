@@ -92,9 +92,16 @@ The followers should see minted NFTs on OpenSea thanks to compatible URI and met
 With 10% commission going for humanitarian courses, would contribute to solving food crises and for other emergency needs.
 
 ## Team Members
-- 
+- [Ojo Patrick Duke - Team Lead and Smart Contract](https://github.com/dukepat)
+- [Oghenefego Omujale - UI/UX ](https://github.com/Ofego)
+- [Kamil Palenik - Smart Contract](https://github.com/xrave110)
+- [Emeduduna Akerejola - Frontend](https://github.com/Emedudu)
+- [Mudit Jain - Smart Contract](https://github.com/Sigma2345)
+- [Yash Gupta - Frontend](https://github.com/knight-95)
+
 
 ## Market Strategy
+With the different NFT products lineup, we are presenting our minimal implementation of a social-u which is the Twitter NFT. Individual tweeps would have to decide, upon seeing the opportunity our platform presents, whether to deploy their tweets to be minted by followers or not. However, for the fundraiser use case, this option is faster and more optimal when compared to existing fundraiser platforms. Moreso, the donor gets an NFT as a proof of donation.
 
 
 
