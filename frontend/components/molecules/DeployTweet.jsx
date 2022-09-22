@@ -148,9 +148,24 @@ function DeployTweet({ contract }) {
         parseInt(transferLimit),
         BigNumber.from(tweetId),
         parseInt(mintFee),
-        parseInt(mintLimit)
+        parseInt(mintLimit),
+        { gasLimit: 50000 }
       );
-      console.log(nftResponse, chainResponse);
+      const response = await contract.setTokenURI(
+        BigNumber.from(tweetId),
+        nftResponse.ipnft
+      );
+      console.log(response, chainResponse);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const mintTweet = async () => {
+    try {
+      const chainResponse = await contract.mintToken(tweetId, {
+        gasLimit: 50000,
+      });
+      console.log(chainResponse);
     } catch (error) {
       console.log(error);
     }
@@ -172,6 +187,7 @@ function DeployTweet({ contract }) {
     setMintLimit,
     setMintFee,
     setTransferLimit,
+    mintTweet,
   };
 
   const flex = { base: "column", lg: "row" };

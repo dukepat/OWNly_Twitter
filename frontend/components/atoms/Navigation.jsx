@@ -11,12 +11,15 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { ethers } from "ethers";
+import { useState, useEffect } from "react";
 import { useMoralis } from "react-moralis";
 import FundVaultModal from "./FundVaultModal";
 
-export default function Navigation({ contract }) {
+export default function Navigation({ contract, address }) {
   const { isOpen, onToggle } = useDisclosure();
-  const { authenticate } = useMoralis();
+  const { authenticate, isAuthenticated } = useMoralis();
+
   return (
     <Box>
       <Flex
@@ -64,20 +67,27 @@ export default function Navigation({ contract }) {
           direction={"row"}
           spacing={6}
         >
-          <Button
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"pink.400"}
-            href={"#"}
-            _hover={{
-              bg: "pink.300",
-            }}
-            onClick={authenticate}
-          >
-            Connect Wallet
-          </Button>
+          {isAuthenticated ? (
+            <Button>{`${address.slice(0, 5)}...${address.slice(
+              38,
+              42
+            )}`}</Button>
+          ) : (
+            <Button
+              display={{ base: "none", md: "inline-flex" }}
+              fontSize={"sm"}
+              fontWeight={600}
+              color={"white"}
+              bg={"pink.400"}
+              href={"#"}
+              _hover={{
+                bg: "pink.300",
+              }}
+              onClick={authenticate}
+            >
+              Connect Wallet
+            </Button>
+          )}
           <FundVaultModal contract={contract} />
         </Stack>
       </Flex>

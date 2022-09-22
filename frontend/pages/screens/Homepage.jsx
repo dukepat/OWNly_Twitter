@@ -20,9 +20,9 @@ function Homepage(props) {
   const router = useRouter();
   const { authenticate, isAuthenticated } = useMoralis();
 
-  useEffect(() => {
-    if (isAuthenticated) router.push("/screens/App");
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated) router.push("/screens/App");
+  // }, [isAuthenticated]);
   return (
     <>
       <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
@@ -47,7 +47,7 @@ function Homepage(props) {
               </Text>
               <br />{" "}
               <Text color={"blue.400"} as={"span"}>
-                an Own and Share  NFT Copyright Platform
+                an Own and Share NFT Copyright Platform
               </Text>{" "}
             </Heading>
             <Text fontSize={{ base: "md", lg: "lg" }} color={"gray.500"}>
@@ -67,9 +67,6 @@ function Homepage(props) {
                   Launch App
                 </Button>
               </Link>
-              <Button rounded={"full"} onClick={authenticate}>
-                Connect Wallet
-              </Button>
             </Stack>
           </Stack>
         </Flex>
@@ -104,8 +101,8 @@ function Homepage(props) {
               <Text fontSize="sm">
                 Intellectual productions such as books, personal interviews,
                 whistleblowers accounts, lectures, topsecrets, can also be
-                minted and be traded on the blockchain for value. They can shared, sold
-                or rented.
+                minted and be traded on the blockchain for value. They can
+                shared, sold or rented.
               </Text>
             </Box>
           </Container>

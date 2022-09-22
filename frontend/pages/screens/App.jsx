@@ -8,6 +8,8 @@ import Navigation from "../../components/atoms/Navigation";
 const App = () => {
   const web3ModalRef = useRef();
   const [contract, setContract] = useState(null);
+  const [address, setAddress] = useState("");
+  let myProvider;
   // contract address is rinkeby's
   const getProviderOrSigner = async (needSigner = false) => {
     // We need to gain access to the provider/signer from metamask
@@ -33,6 +35,15 @@ const App = () => {
     const provider = await getProviderOrSigner(withSigner);
     setContract(new ethers.Contract(contractAddress, contractABI, provider));
   };
+  const getAccounts = async () => {
+    myProvider = await getProviderOrSigner(false);
+    let accounts = await myProvider.send("eth_requestAccounts", []);
+    setAddress(accounts[0]);
+  };
+  myProvider &&
+    myProvider.on("accountsChanged", function (accounts) {
+      setAddress(accounts[0]);
+    });
   useEffect(() => {
     web3ModalRef.current = new Web3Modal({
       network: "mumbai",
@@ -40,10 +51,11 @@ const App = () => {
       disableInjectedProvider: false,
     });
     getContract(true);
+    getAccounts();
   }, []);
   return (
     <>
-      <Navigation contract={contract} />
+      <Navigation contract={contract} address={address} />
       <DeployTweet contract={contract} />
     </>
   );
