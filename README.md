@@ -7,7 +7,7 @@ The OWNly project is an own and share NFT Copyright Platform. You can literally 
 ### [Frontend](https://github.com/dukepat/OWNly_Twitter/tree/main/frontend)
 
 ## Table of content
-- [OWNly Project-MoralisxFilecoin Hackathon](#ownly-project---Moralis x Filecoin "1, 2, Web3" Hackathon)
+- [OWNly Project-MoralisxFilecoin Hackathon](#ownly-project---MoralisxFilecoin-"1,-2,-Web3"-Hackathon)
   - [Table of content](#table-of-content)
   - [Ideation](#ideation)
   - [UI](#ui)
