@@ -90,6 +90,7 @@ function DeployTweet({ contract }) {
       e.preventDefault();
       setHint(false);
       setLoading(true);
+
       const url = e.target.elements.tweetURL.value;
       const id = url.split("/")[5];
       setTweetId(id);
@@ -110,6 +111,45 @@ function DeployTweet({ contract }) {
       setTweetData(null);
     }
   };
+  //<<<<<<< HEAD
+
+  // const convert = async (format) => {
+  //   const node = tweetRef.current;
+  //   const scale = 2;
+
+  //   let dataUrl;
+
+  //   const style = {
+  //     transform: "scale(2)",
+  //     transformOrigin: "top left",
+  //   };
+
+  //   const param = {
+  //     height: node.offsetHeight * scale,
+  //     width: node.offsetWidth * scale,
+  //     quality: 1,
+  //     style,
+  //   };
+
+  //   switch (format) {
+  //     case "png": {
+  //       dataUrl = await domtoimage.toPng(node, param);
+  //       let savedItem = saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
+  //       return savedItem;
+  //     }
+
+  //     case "jpeg": {
+  //       dataUrl = await domtoimage.toJpeg(node, param);
+  //       let savedItem = saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
+  //       return savedItem;
+  //     }
+
+  //     case "svg": {
+  //       dataUrl = await domtoimage.toSvg(node, param);
+  //       let savedItem = saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
+  //        return savedItem;
+  //     }
+
   const fileFromURL = async (tweetImageURL) => {
     const type = mime.getType("png");
     return new File([tweetImageURL], "tweetImage", { type });
@@ -153,7 +193,8 @@ function DeployTweet({ contract }) {
       );
       const response = await contract.setTokenURI(
         BigNumber.from(tweetId),
-        nftResponse.ipnft
+        nftResponse.ipnft,
+        { gasLimit: 50000 }
       );
       console.log(response, chainResponse);
     } catch (error) {

@@ -43,7 +43,7 @@ function Homepage(props) {
                   zIndex: -1,
                 }}
               >
-                Ownly,
+                OWNly,
               </Text>
               <br />{" "}
               <Text color={"blue.400"} as={"span"}>
@@ -101,7 +101,7 @@ function Homepage(props) {
               <Text fontSize="sm">
                 Intellectual productions such as books, personal interviews,
                 whistleblowers accounts, lectures, topsecrets, can also be
-                minted and be traded on the blockchain for value. They can
+                minted and be traded on the blockchain for value. They can be
                 shared, sold or rented.
               </Text>
             </Box>

@@ -214,7 +214,7 @@ const Settings = ({ props }) => {
         </Flex>
       ) : (
         <Flex>
-          <Button>MINT</Button>
+          <Button onClick={props.mintTweet}>MINT</Button>
         </Flex>
       )}
     </Box>

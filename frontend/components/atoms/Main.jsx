@@ -20,13 +20,13 @@ const Main = ({
 
   if (hint) {
     return (
-      <Box m="0 auto" className="non-tweet i" py="2rem" flexDirection="column">
+      <Box m="0 auto" className="non-tweet i" py="1rem" flexDirection="column">
         <Box>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            width="8rem"
-            height="8rem"
+            width="5rem"
+            height="5rem"
           >
             <path fill="none" d="M0 0h24v24H0z" />
             <path
@@ -94,7 +94,7 @@ const Main = ({
             />
           )}
         </div>
-        gyu
+        OWNly_Mint
       </Box>
     </Box>
   );
