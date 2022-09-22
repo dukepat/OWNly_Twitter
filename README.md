@@ -2,12 +2,12 @@
 The OWNly project is an own and share NFT Copyright Platform. You can literally put a price on almost anything-U in the digital space.
 
 ## Project Repos:
-### [UI/UX](https://github.com/OWNly-Hackathon-Prpoject/Figma-UI-UX)
-### [Smart Contract](https://github.com/OWNly-Hackathon-Prpoject/contracts)
-### [Frontend](https://github.com/OWNly-Hackathon-Prpoject/frontend)
+### [UI/UX](https://github.com/dukepat/OWNly_Twitter/tree/main/UI-UX)
+### [Smart Contract](https://github.com/dukepat/OWNly_Twitter/tree/main/contracts)
+### [Frontend](https://github.com/dukepat/OWNly_Twitter/tree/main/frontend)
 
 ## Table of content
-- [OWNly Project](#ownly-project---Moralis x Filecoin "1, 2, Web3" Hackathon)
+- [OWNly Project-MoralisxFilecoin Hackathon](#ownly-project---Moralis x Filecoin "1, 2, Web3" Hackathon)
   - [Table of content](#table-of-content)
   - [Ideation](#ideation)
   - [UI](#ui)
@@ -61,11 +61,11 @@ The OWNly project is an own and share NFT Copyright Platform. You can literally 
 Contract allows to mint ERC721 NFT with metadata from `NFT.storage` API. Content creator can easily deploy their valuable tweets with customizable fees and supply. Followers in order to support the creator can mint the NFT paying some fee (established by content creator). Users can use their personal balance in vault for paying for transactions without any signing of transaction. This abstraction allows for users to only send in some bulk amount to vault once in a while to prevent having to always sign transaction using a provider.
 
 ### Tests
-The [integration test](https://github.com/OWNly-Hackathon-Prpoject/contracts/blob/main/test/integration/MintingNfts.test.js) imitates well, how the general flow looks like:
+The [integration test](https://github.com/dukepat/OWNly_Twitter/blob/main/contracts/test/integration/MintingTwitterNfts.test.js) imitates well, how the general flow looks like:
 1. Contract owner can set some deploy fee
 2. Tweet with certain ID is loaded to the website - this case ID 1844 is assumed
-3. Content creator deploys his tweet with some certain parameters - pays minor fee from his vault or inludes fee in transaction.
-4. Follower mints deployed tweet with customizable image - pays fee established by content creator from his vault or inludes fee in transaction.
+3. Content creator deploys his tweet with some certain parameters - pays minor fee from his vault or includes fee in transaction.
+4. Follower mints deployed tweet with customizable image - pays fee established by content creator from his vault or includes fee in transaction.
 5. Some basic metadata about tweet and customized image is stored in IPFS via `NFT.storage` API
 6. URI to this metadata is stored in the blockchain 
 
