@@ -111,45 +111,45 @@ function DeployTweet({ contract }) {
       setTweetData(null);
     }
   };
-<<<<<<< HEAD
+//<<<<<<< HEAD
 
-  const convert = async (format) => {
-    const node = tweetRef.current;
-    const scale = 2;
+  // const convert = async (format) => {
+  //   const node = tweetRef.current;
+  //   const scale = 2;
 
-    let dataUrl;
+  //   let dataUrl;
 
-    const style = {
-      transform: "scale(2)",
-      transformOrigin: "top left",
-    };
+  //   const style = {
+  //     transform: "scale(2)",
+  //     transformOrigin: "top left",
+  //   };
 
-    const param = {
-      height: node.offsetHeight * scale,
-      width: node.offsetWidth * scale,
-      quality: 1,
-      style,
-    };
+  //   const param = {
+  //     height: node.offsetHeight * scale,
+  //     width: node.offsetWidth * scale,
+  //     quality: 1,
+  //     style,
+  //   };
 
-    switch (format) {
-      case "png": {
-        dataUrl = await domtoimage.toPng(node, param);
-        let savedItem = saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
-        return savedItem;
-      }
+  //   switch (format) {
+  //     case "png": {
+  //       dataUrl = await domtoimage.toPng(node, param);
+  //       let savedItem = saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
+  //       return savedItem;
+  //     }
 
-      case "jpeg": {
-        dataUrl = await domtoimage.toJpeg(node, param);
-        let savedItem = saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
-        return savedItem;
-      }
+  //     case "jpeg": {
+  //       dataUrl = await domtoimage.toJpeg(node, param);
+  //       let savedItem = saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
+  //       return savedItem;
+  //     }
 
-      case "svg": {
-        dataUrl = await domtoimage.toSvg(node, param);
-        let savedItem = saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
-         return savedItem;
-      }
-=======
+  //     case "svg": {
+  //       dataUrl = await domtoimage.toSvg(node, param);
+  //       let savedItem = saveAs(dataUrl, `${new Date().toJSON()}.${format}`);
+  //        return savedItem;
+  //     }
+      
   const fileFromURL = async (tweetImageURL) => {
     const type = mime.getType("png");
     return new File([tweetImageURL], "tweetImage", { type });
@@ -177,7 +177,6 @@ function DeployTweet({ contract }) {
       return response;
     } catch (error) {
       throw error;
->>>>>>> 1dcebdf7edc195dbf17d2b9327a461b00a77cf49
     }
   };
   const deployTweet = async () => {
